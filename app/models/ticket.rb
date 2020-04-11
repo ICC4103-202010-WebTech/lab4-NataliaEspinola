@@ -11,7 +11,6 @@ class Ticket < ApplicationRecord
   private
   def update_stats
     es = self.ticket_type.event.event_stat
-    es.tickets_sold ||= 0
     begin
       if self.ticket_type.event.event_venue.capacity == es.tickets_sold
         raise 'Error: tickets are sold out'
@@ -24,7 +23,6 @@ class Ticket < ApplicationRecord
 
   def destroy_stats
     es = self.ticket_type.event.event_stat
-    es.tickets_sold ||= 0
     es = self.ticket_type.event.event_stat
     es.update(tickets_sold: es.attendance - 1)
     es.update(tickets_sold: es.tickets_sold - 1)
